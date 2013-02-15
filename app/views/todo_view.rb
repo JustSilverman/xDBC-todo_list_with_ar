@@ -1,3 +1,5 @@
+require_relative "../models/list_item"
+
 class TodoView
   COMPLETION = {true => "[X]", false => "[ ]"}
  

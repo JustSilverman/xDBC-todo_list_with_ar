@@ -1,11 +1,11 @@
-require_relative '..models/list_item'
-require_relative '../view/todo_view'
+require_relative '../models/list_item'
+require_relative '../views/todo_view'
  
 class TodoController
   attr_reader :id, :action, :task, :user_interface
  
   def initialize(args)
-    @id             = args[:id]
+    @id             = args[:id].to_i
     @action         = args[:action]
     @task           = args[:task]
     @user_interface = TodoView.new
