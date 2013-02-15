@@ -27,8 +27,7 @@ desc "populate the test database with sample data"
 task "db:populate" do
   100.times do 
     ListItem.create(:task         => Faker::Company.bs,
-                    :completed_at => nil
-                    )
+                    :completed_at => nil)
   end
 end
 
