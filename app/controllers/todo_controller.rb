@@ -1,23 +1,20 @@
 require_relative '..models/list_item'
-
+require_relative '../view/todo_view'
  
 class TodoController
-  attr_reader :id, :action, :task, :database, :user_interface
+  attr_reader :id, :action, :task, :user_interface
  
   def initialize(args)
     @id             = args[:id]
     @action         = args[:action]
     @task           = args[:task]
-    @database       = Database.new('todo.txt')
-    @user_interface = UserInterface.new
+    @user_interface = TodoView.new
     execute!
   end
  
   def execute!
     if self.respond_to?(action.to_sym)
-      if self.send(action.to_sym)
-        database.save
-      else
+      unless self.send(action.to_sym)
         user_interface.invalid_id
       end 
     else
@@ -26,38 +23,34 @@ class TodoController
   end
  
   def default_task_args
-    {"id" => id, "task" => task, "status" => :incomplete}
+    {"id" => id, "task" => task, "completed_at" => nil}
   end
  
   def add
-    database.add_item(ListItem.new(default_task_args))
-    user_interface.confirm_add(task)
+    item = ListItem.create!(default_task_args)
+    user_interface.confirm_add(item)
     true
   end
  
-  def get_list
-    database.get_list
-  end
- 
   def list
-    user_interface.display_list(get_list)
+    user_interface.display_list(ListItem.all)
   end
  
   def delete
-    item = database.get_item(id)
+    item = ListItem.all[id-1]
     return false if item.nil?
  
-    database.delete(item.id)
-    user_interface.confirm_delete(item.task)
+    user_interface.confirm_delete(item)
+    item.destroy
     true
   end
  
   def complete
-    item = database.get_item(id)
+    item = ListItem.all[id-1]
     return false if item.nil?
  
-    database.complete_item(item.id)
-    user_interface.confirm_complete(item.task)
+    item.complete!
+    user_interface.confirm_complete(item)
     true
   end
 end
