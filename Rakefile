@@ -23,10 +23,13 @@ task "db:migrate" do
   end
 end
 
-
 desc "populate the test database with sample data"
 task "db:populate" do
-  
+  100.times do 
+    ListItem.create(:task         => Faker::Company.bs,
+                    :completed_at => nil
+                    )
+  end
 end
 
 desc 'Retrieves the current schema version number'
