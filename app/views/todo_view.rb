@@ -1,22 +1,22 @@
 class TodoView
-  COMPLETION = {:complete => "[X]", :incomplete => "[ ]"}
+  COMPLETION = {true => "[X]", false => "[ ]"}
  
   def display_list(list)
-    list.list_items.each do |item|
-      puts "#{item.id}.".ljust(4) + " #{COMPLETION[item.status]} #{item.task}"
+    list.each do |item|
+      puts "#{item.id}.".ljust(4) + " #{COMPLETION[item.completed?]} #{item.task}"
     end
   end
  
-  def confirm_add(task)
-    puts "Appended #{task} to your TODO list..."
+  def confirm_add(item)
+    puts "Appended #{item.task} to your TODO list..."
   end
  
-  def confirm_delete(task)
-    puts "Deleted #{task} from your TODO list..."
+  def confirm_delete(item)
+    puts "Deleted #{item.task} from your TODO list..."
   end
  
-  def confirm_complete(task)
-    puts "#{task} has been marked as complete!"
+  def confirm_complete(item)
+    puts "#{item.task} has been marked as complete!"
   end
  
   def non_action
