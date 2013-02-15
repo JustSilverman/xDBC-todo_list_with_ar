@@ -4,8 +4,9 @@ class TodoView
   COMPLETION = {true => "[X]", false => "[ ]"}
  
   def display_list(list)
-    list.each do |item|
-      puts "#{item.id}.".ljust(4) + " #{COMPLETION[item.completed?]} #{item.task}"
+    list.each_with_index do |item, index|
+      index += 1
+      puts "#{index}.".ljust(4) + " #{COMPLETION[item.completed?]} #{item.task}"
     end
   end
  
